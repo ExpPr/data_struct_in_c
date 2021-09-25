@@ -1,4 +1,4 @@
-#include "Stack_LinkedList.h"
+#include "Stack_Link.h"
 #include <stdio.h>
 
 int main(void) {
@@ -12,12 +12,12 @@ int main(void) {
     while (in!=0) {
         mod=in%2;
         in/=2;
-        push(p,mod);   
+        int_push(p,mod);   
     }
 
     printf("The binary number of %d : ",copy);
     while (!int_isEmptyStack(p)) {
-        printf("%d",pop(p));
+        printf("%d",int_pop(p));
     }
     int_delete_stack(p);
     return 0;

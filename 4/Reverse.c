@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Stack_LinkedList.h"
+#include "Stack_Link.h"
 
 int main(void) {
     int sp;
@@ -10,18 +10,18 @@ int main(void) {
         int verification=0;
         printf("Enter a number : <Ctrl + D> to stop : ");
         verification=scanf("%d",&sp);
-
+        rewind(stdin);
         if (verification!=1) {
             break;
         }
-        push(p,sp);
+        int_push(p,sp);
     }
     
-
-    while (!isEmptyStack(p)) {
-        printf("%d\n",pop(p));
+    printf("\nThe List of Numbers reversed : \n");
+    while (!int_isEmptyStack(p)) {
+        printf("%d\n",int_pop(p));
     }
 
-    delete_stack(p);
+    int_delete_stack(p);
     return 0;
 }
