@@ -4,17 +4,19 @@
 
     Stack_Array ://int형 전용 stack
         초기화 방식 : p_intStack p = init_Stack(int size)
-        push : push(p_intStack p, int item)
-        top : top(p_intStack p)
-        pop : pop(p_intStack p)
-        해제 : int_destroyyStack(p_intStack p)
+        push : int_push(p_intStack p, int item)
+        top : int_top(p_intStack p)
+        pop : int_pop(p_intStack p)
+        해제 : int_destroyStack(p_intStack p)
+        개수 : int_CountStackItem(int_pStack p)
     
     Stack_Link : //int형 전용 stack
         초기화방식 : int_pStack p=init_Stack() -> link형이므로 크기제한 없음.
         push : int_push(int_pStack p , int item)
-        top : top (int_pStack p)
-        pop : pop (int_pStack p)
+        top : int_top (int_pStack p)
+        pop : int_pop (int_pStack p)
         해제 : int_delete_stack(int_pStack p)
+        개수 : int_CountStackItem(int_pStack p)
 
     Stack_Link2 : char 전용 stack
         초기화방식 : pStack p = createStack()
@@ -26,12 +28,15 @@
         ==============================
         주의점 : 
 
-        함수 오버로드가 안되어서 Array은 Array형끼리
-        Link형은 Link형끼리만 사용해야 합니다.
-        안그럼 치명적인 버그가 걸립니다. (즉 Stack_Array.h 와 Stack_Link.h 이런식으로  include 금지)
-        (Stack.Link.h Stack.Link2.h 이런식으로 include하는 것은 가능)
+        Stack_Array.h 와 Stack_Link는 같이 사용이 불가능합니다. 사용시 버그날 수 있습니다.
         ==============================
+================
+exit(1) 처리
 
+강제로 비어있는 stack에 pop 할 경우 강제 종료 합니다.
+calculator.c에서 이상한 식을 사용하거나 div/0인 경우 이 명령어로 강제로 종료합니다.
+
+===============
 구현 방식 : 
         Array 형 : 
 
@@ -72,7 +77,7 @@ Calculator.c 파일 :
     작동방식 :
         1. 식을 입력 받음
         2. 먼저 문법이 맞는지 판단을 함 
-         -> infix 방식으로 수 사이에 연산자 없이 공백으로 수를 띄우는지 판별. (숫자 다음 공백칸일때 감지모드 들어가며, 숫자를 발견하면 바로 에러처리)
+         -> infix 방식으로 수 사이에 연산자 없이 공백으로 수를 띄우는지 판별. (숫자 다음 공백칸일때 감지모드 들어가며, 아 상태에서 숫자를 발견하면 바로 에러처리)
             -> (감지모드에서 연산자나 괄호 발견시 그 즉각 감지모드 해제)
          -> 괄호 문법 확인. 열린괄호 개수와 닫힌 괄호 개수 판별. ) (  같은 오류도 판별함. stack방식보단 단순 count를 이용함.
          -> 공백 제거
@@ -82,7 +87,7 @@ Calculator.c 파일 :
             1. 숫자는 전부 출력. 단 숫자 출력 이후 다른 숫자 이외 문자발견시 공백으로 구분.
             2. 열린 괄호는 일단 stack함
             3. 닫힌 괄호가 나오면. 열린 괄호가 나올때까지 혹은 stack이 빌때까지 stack에 담긴 연산자 pop한뒤 출력. 열린 괄호는 제거함.
-            4. 연산자가 나오면 stack에 담겨진 연산자가 자기자신보다 상위거나 동급이면 계속 pop한 뒤 이 pop을 출력함, 하위 연산자 만날경우, 자기자신을 stack
+            4. 연산자가 나오면 stack에 담겨진 연산자와 비교시 자기자신보다 상위거나 동급이면 계속 pop한 뒤 이 pop을 출력함, 하위 연산자 만날경우 자기자신을 push
              -> ( ) : 최하위 // + - : 중위 // * % 최상위 
              5. 끝에 다다랄을때 stack에 남은 것이 있으면 전부 pop하고 출력.
         -> postfix방식으로 계산 
@@ -97,7 +102,7 @@ Calculator.c 파일 :
 
 나누기를 실행 할 때 / 이 아닌 %를 사용해야함. 그러지 않을 경우 에러가 발생.
 
-가끔씩 작동이(?) 안할 때 도 잇습니다. 그럴땐 여러번 작동을 부탁드립니다.
+vscode 로 구동시 가끔 작동이 안할 때 도 잇습니다. 그럴땐 여러번 작동을 부탁드립니다.
 
 ---------------------
 (9/25)
@@ -105,3 +110,9 @@ Calculator.c 파일 :
 이전 파일을 올려놓아 명령어가 없어진 것이 문제인 것이 발견했습니다.
 수정하였습니다.
 
+----------------------
+(9/26)
+
+https://repl.it/languages/c 사이트에 구동되게끔 작동하도록 오류를 고쳣습니다
+-> return 공백 수정 : 강제로 프로그램종료
+-> 명령어 수정.

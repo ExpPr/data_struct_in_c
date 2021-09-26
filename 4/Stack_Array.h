@@ -16,7 +16,7 @@ int_Stack *init_Stack(int size) {
 
     pStack->stack=(Element*) malloc(sizeof(Element)*size);
 
-    if (pStack->size==NULL) {
+    if (pStack->stack==NULL) {
         free(pStack);
         return NULL;
     }
@@ -28,49 +28,53 @@ int_Stack *init_Stack(int size) {
     return pStack;
 }
 
-int isFullStack(p_intStack p) {
+int int_isFullStack(p_intStack p) {
     if (p->size==((p->top)+1)) {
         return 1;//참
     }
     return 0;
 }
 
-int isEmptyStack (p_intStack p) {
+int int_isEmptyStack (p_intStack p) {
     return (p->top==-1)?1:0;
 }
 
-int CountStackItem (p_intStack p) {
+int int_CountStackItem (p_intStack p) {
     return (p->top)+1;
 }
 
-void push(p_intStack p,Element item) {
-    if (isFullStack(p)) {
+void int_push(p_intStack p,Element item) {
+    if (int_isFullStack(p)) {
     }
     else {
         p->stack[++(p->top)]=item;
     }
 }
 
-Element pop(p_intStack p) {
-    if (isEmptyStack(p)) {
-
+Element int_pop(p_intStack p) {
+    if (int_isEmptyStack(p)) {
+      if (p->size>0) {
+        free(p->stack);
+      }
+      free(p);
+      exit(1);
     }
     else {
         return p->stack[(p->top)--];
     }
 }
 
-Element top(p_intStack p) {
+Element int_top(p_intStack p) {
     return p->stack[p->top];
 }
 
-void destroyStack (p_intStack p) {
+void int_destroyStack (p_intStack p) {
     if (p->size>0) {
         free(p->stack);
     }
     free(p);
 }
 
-void clearStack (p_intStack p) {
+void int_clearStack (p_intStack p) {
     p->top=-1;
 }

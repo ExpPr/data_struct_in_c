@@ -41,7 +41,11 @@ void int_push(int_pStack p,element item) {
 
 element int_pop(int_pStack p) {
     if (int_isEmptyStack(p)) {
-        return;
+        while (p->top!=NULL) {
+        int_pop(p);
+        }
+        free(p);
+        exit(1);
     }
     else {
         element r=(p->top)->data;
@@ -72,4 +76,8 @@ void int_clearStack(int_pStack p) {
     while (p->top!=NULL) {
         int_pop(p);
     }
+}
+
+int int_CountStackItem(int_pStack p) {
+    return (p->top)+1;
 }

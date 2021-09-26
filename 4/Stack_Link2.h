@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 typedef char Element;
 
 typedef struct tStackNode {
@@ -40,7 +41,8 @@ void push(pStack p,Element item) {
 
 Element pop(pStack p) {
     if (isEmptyStack(p)) {
-        return;
+        free(p);
+        exit(1);
     }
     else {
         Element r=(p->top)->data;
@@ -54,7 +56,7 @@ Element pop(pStack p) {
 
 Element top(pStack p) {
     if (isEmptyStack(p)) {
-
+        printf("\nstack is empty\n");
     } else {
         return p->top->data;
     }
@@ -71,4 +73,8 @@ void clearStack(pStack p) {
     while (p->top!=NULL) {
         pop(p);
     }
+}
+
+int countStackItem(pStack p) {
+    return (p->top)+1;
 }
