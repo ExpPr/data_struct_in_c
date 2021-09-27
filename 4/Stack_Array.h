@@ -1,14 +1,15 @@
 #include <stdlib.h>
+#include <stdio.h>
 typedef int Element;
 
 typedef struct {
     Element *stack;
     int size;
     int top;
-} int_Stack, *p_intStack;
+} int_Stack, *int_pStack;
 
 int_Stack *init_Stack(int size) {
-    p_intStack pStack = (p_intStack) malloc(sizeof(int_Stack));
+    int_pStack pStack = (int_pStack) malloc(sizeof(int_Stack));
 
     if (pStack==NULL) {
         return NULL;
@@ -28,30 +29,31 @@ int_Stack *init_Stack(int size) {
     return pStack;
 }
 
-int int_isFullStack(p_intStack p) {
+int int_isFullStack(int_pStack p) {
     if (p->size==((p->top)+1)) {
         return 1;//참
     }
     return 0;
 }
 
-int int_isEmptyStack (p_intStack p) {
+int int_isEmptyStack (int_pStack p) {
     return (p->top==-1)?1:0;
 }
 
-int int_CountStackItem (p_intStack p) {
+int int_CountStackItem (int_pStack p) {
     return (p->top)+1;
 }
 
-void int_push(p_intStack p,Element item) {
+void int_push(int_pStack p,Element item) {
     if (int_isFullStack(p)) {
+        printf("\n stack is full \n");
     }
     else {
         p->stack[++(p->top)]=item;
     }
 }
 
-Element int_pop(p_intStack p) {
+Element int_pop(int_pStack p) {
     if (int_isEmptyStack(p)) {
       if (p->size>0) {
         free(p->stack);
@@ -64,17 +66,17 @@ Element int_pop(p_intStack p) {
     }
 }
 
-Element int_top(p_intStack p) {
+Element int_top(int_pStack p) {
     return p->stack[p->top];
 }
 
-void int_destroyStack (p_intStack p) {
+void int_delete_stack (int_pStack p) {
     if (p->size>0) {
         free(p->stack);
     }
     free(p);
 }
 
-void int_clearStack (p_intStack p) {
+void int_clearStack (int_pStack p) {
     p->top=-1;
 }

@@ -13,7 +13,7 @@ typedef struct {
 } Stack, *pStack;
 
 
-pStack createStack() {
+pStack createStack(int size) {
     pStack p=(pStack)malloc(sizeof(Stack));
     if (p==NULL) {
         return NULL;
@@ -31,6 +31,7 @@ int isEmptyStack(pStack p) {
 void push(pStack p,Element item) {
     pStackNode pNew=(pStackNode)malloc(sizeof(StackNode));
     if (pNew==NULL) {
+        printf("\n Appropriate memory allocation is not made. \n");
         return;
     }
     pNew->data=item;

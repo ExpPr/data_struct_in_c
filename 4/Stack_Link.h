@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef int element;
 
@@ -13,7 +14,7 @@ typedef struct {
 } int_Stack, *int_pStack;
 
 
-int_pStack init_Stack() {
+int_pStack init_Stack(int size) {
     int_pStack p=(int_pStack)malloc(sizeof(int_Stack));
     if (p==NULL) {
         return NULL;
@@ -31,7 +32,7 @@ int int_isEmptyStack(int_pStack p) {
 void int_push(int_pStack p,element item) {
     int_pStackNode pNew=(int_pStackNode)malloc(sizeof(int_StackNode));
     if (pNew==NULL) {
-        return;
+        printf("\n Appropriate memory allocation is not made. \n");
     }
     pNew->data=item;
     pNew->next=p->top;
@@ -41,6 +42,7 @@ void int_push(int_pStack p,element item) {
 
 element int_pop(int_pStack p) {
     if (int_isEmptyStack(p)) {
+        printf("\n stack is empty \n");
         while (p->top!=NULL) {
         int_pop(p);
         }
@@ -59,7 +61,7 @@ element int_pop(int_pStack p) {
 
 element int_top(int_pStack p) {
     if (int_isEmptyStack(p)) {
-
+        printf("\n stack is empty \n");
     } else {
         return p->top->data;
     }
