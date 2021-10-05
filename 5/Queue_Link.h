@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 typedef char* Element;
 
 typedef struct tQueueNode {//real_data_inp
@@ -12,7 +13,7 @@ typedef struct {//Head
     pQueueNode front,rear;
 } Queue, *pQueue;
 
-pQueue createQueue() {
+pQueue createQueue(int size) {
     pQueue q=(pQueue) malloc (sizeof(Queue));
 
     if (q==NULL) {
@@ -35,9 +36,13 @@ void Enqueue(pQueue q,Element item) {
     pQueueNode p = (pQueueNode) malloc(sizeof(QueueNode));
     
     if (p==NULL) {
-        return ;
+        printf("Memory Allocationg is not made\n");
+        free(q);
+        exit(1);
     }
-    p->data=item;
+    int len=strlen(item)+1;
+    p->data=(Element) malloc (sizeof(char)*len);
+    strcpy(p->data,item);
     p->next=NULL;
 
     if (q->count<=0) {
@@ -53,9 +58,9 @@ void Enqueue(pQueue q,Element item) {
 
 Element Dequeue(pQueue q) {
     if (IsEmptyQueue(q)) {
-        printf("Queue is empty!\n");
         return NULL;
     }
+
     Element result=(q->front)->data;
     pQueueNode delptr=q->front;
     
@@ -85,12 +90,12 @@ void destroyQueue(pQueue q) {
     free(q);
 }
 
-void printQueue(pQueue q) {//Queue에 있는 모든 데이터 출력.
+void printQueue(pQueue q) {//Queue에 있는 모든 데이터 출력. (str, count)
     pQueueNode temp=q->front;
     int count=0;
-
-
         printf("(");
+
+        if (!IsEmptyQueue(q)) {
         while (temp!=NULL) {
         printf(" %s %d ",temp->data,++count);
         if (temp->next==NULL) {
@@ -99,5 +104,12 @@ void printQueue(pQueue q) {//Queue에 있는 모든 데이터 출력.
         printf(" , ");
         temp=temp->next;
         }
+        }
         printf(")\n\n");
-    }
+
+
+}
+
+int countQueue (pQueue p) {
+    return p->count;
+}

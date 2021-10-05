@@ -133,7 +133,7 @@ char *infix_to_postfix(char *exp) {
     int len=strlen(exp);
     int count=0;
     char *temp=(char*)malloc(sizeof(char)*2*len+1);
-    pStack p=createStack();
+    pStack p=createStack(200);
 
     for (int i=0;i<len;i++) {
         if (exp[i]>='0'&&exp[i]<='9') {
@@ -180,7 +180,7 @@ int calc_postfix (char *post) {
     int re;
     int op1,op2;
 
-    int_pStack p=init_Stack();
+    int_pStack p=init_Stack(100);
 
     for (int i=0;i<len;i++) {
         if (post[i]>='0'&&post[i]<='9') {

@@ -1,4 +1,4 @@
-#include "Queue_Link.h"
+#include "Queue_Array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,13 +28,16 @@ void select_two(pQueue p) {
     char* tempcode=Dequeue(p);
     if (tempcode!=NULL) {
     printf("Customer dequeued : %s\n",tempcode); 
-    free(tempcode); }
     printf("The current status of Queue : ");
     printQueue(p);
+    }
+    else {
+        printf("Queue is empty!\n");
+    }
 }
 
 int main(void) {
-    pQueue custom=createQueue();
+    pQueue custom=createQueue(100);
     int select=-1;
 
     while(1) {

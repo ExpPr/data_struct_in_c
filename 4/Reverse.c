@@ -4,7 +4,7 @@
 
 int main(void) {
     int sp;
-    int_pStack p=init_Stack();
+    int_pStack p=init_Stack(100);
 
     while (1) {
         int verification=0;

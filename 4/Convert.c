@@ -7,7 +7,7 @@ int main(void) {
     scanf("%d",&in);
     int copy=in;
 
-    int_pStack p=init_Stack();
+    int_pStack p=init_Stack(100);
 
     while (in!=0) {
         mod=in%2;

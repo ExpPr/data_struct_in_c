@@ -42,6 +42,7 @@ void push(pStack p,Element item) {
 
 Element pop(pStack p) {
     if (isEmptyStack(p)) {
+        printf("\nStack is empty\n");
         free(p);
         exit(1);
     }
@@ -58,6 +59,7 @@ Element pop(pStack p) {
 Element top(pStack p) {
     if (isEmptyStack(p)) {
         printf("\nstack is empty\n");
+        return '\0';
     } else {
         return p->top->data;
     }
@@ -77,5 +79,20 @@ void clearStack(pStack p) {
 }
 
 int countStackItem(pStack p) {
-    return (p->top)+1;
+    return (p->count);
+}
+
+void printAll(pStack p) {
+  printf("STACK Stat : ");
+  
+  if (isEmptyStack(p)) {
+    printf("Empty");
+  }
+  else {
+  pStackNode temp =p->top;
+  do {
+    printf("%c",temp->data);
+    temp=temp->next;
+  } while (temp!=NULL);
+  }
 }
