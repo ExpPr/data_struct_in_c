@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 typedef char Element;
 
 typedef struct tStackNode {

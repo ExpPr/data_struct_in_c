@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "List_Link.h"
+#include "List_Array.h"
 //include 파일명만 바꾸면 됩니다.
 
 void list_print(pint_List p) {

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef int element;
 
-typedef enum {false, true} bool;
 
 typedef struct {
   element *data;
