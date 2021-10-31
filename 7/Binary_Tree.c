@@ -87,6 +87,7 @@ int main(void) {
   pTreeNode head=(pTreeNode) Dequeue(lists);
   str_to_tree(head,lists,empty);
   pQueue nodes=createQueue(1);
+  
 
   printf("Pre - Order : ");
   Preorder(head);
@@ -103,6 +104,11 @@ int main(void) {
   printf("Breath - First : ");
   print_bfs(head,nodes);
 
+  
+  DestroyTree(head);
+  destroyQueue(lists);
+  destroyQueue(nodes);
+  
 
     return 0;
 }
