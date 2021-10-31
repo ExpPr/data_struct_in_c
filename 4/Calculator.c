@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "Stack_Array.h"
-#include "Stack_Array2.h"
+#include "Stack_Link.h"
+#include "Stack_Link2.h"
 
 void check_operand_error(char *exp) {//325 23 *10-3 같은 입력 오류 판별. 가장 먼저 실행요구
     int p=strlen(exp),n=0;

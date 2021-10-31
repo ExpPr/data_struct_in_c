@@ -6,7 +6,7 @@ typedef int element;
 
 typedef struct int_tStackNode {
     element data;
-    struct tStackNode *next;
+    struct int_tStackNode *next;
 } int_StackNode, *int_pStackNode;
 
 typedef struct {
@@ -30,15 +30,17 @@ int int_isEmptyStack(int_pStack p) {
 }
 
 
-void int_push(int_pStack p,element item) {
+bool int_push(int_pStack p,element item) {
     int_pStackNode pNew=(int_pStackNode)malloc(sizeof(int_StackNode));
     if (pNew==NULL) {
         printf("\n Appropriate memory allocation is not made. \n");
+        return false;
     }
     pNew->data=item;
     pNew->next=p->top;
     p->top=pNew;
     p->count++;
+    return true;
 }
 
 element int_pop(int_pStack p) {
@@ -82,5 +84,5 @@ void int_clearStack(int_pStack p) {
 }
 
 int int_CountStackItem(int_pStack p) {
-    return (p->top)+1;
+    return p->count;
 }
