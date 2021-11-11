@@ -71,4 +71,3 @@ pTreeNode CopyTree(pTreeNode root) {
     }
   return create_tree(CopyTree(root->left),root->data,CopyTree(root->right));
 }
-  
