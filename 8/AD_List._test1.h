@@ -25,7 +25,7 @@ typedef struct arc {
   struct arc* next;
 } ARC, *pArc;
 
-pGragh CreateGragh(int (*comp)(void *a1, void *a2)) {
+pGragh CreateGragh(int comp(void *a1, void *a2)) {
     pGragh temp = (pGragh) malloc(sizeof(Gragh));
     if (temp==NULL) {
       return NULL;
@@ -36,55 +36,29 @@ pGragh CreateGragh(int (*comp)(void *a1, void *a2)) {
     return temp;
 }
 
-pVertex check_data(pGragh head,void *item) {
-    pVertex temp=head->first;
-    for (;temp!=NULL;temp=temp->pnextvertex) {
-        if (head->compare(item,temp->data)==0) {
-            break;
-        }
-    }
-    return temp;
-}
-
 pVertex addVertex(pGragh head,void* item) {
-  pVertex newPtr, locPtr=head->first, predPtr=NULL;
-  newPtr = (pVertex) malloc (sizeof(Vertex));
-  if (newPtr!=NULL) {
-    newPtr->pnextvertex=NULL;
-    newPtr->data=item;
-    newPtr->inDegree=0;
-    newPtr->OutDegree=0;
-    newPtr->processed=0;
-    newPtr->fpArk=NULL;
-    head->count++;
-  }
-  else {
+  pVertex temp = (pVertex) malloc(sizeof(Vertex));
+  if (temp==NULL) {
     return NULL;
   }
+  temp->data=item;
+  head->count++;
+  temp->pnextvertex=NULL;
+  temp->inDegree=0;
+  temp->OutDegree=0;
+  temp->fpArk=NULL;
 
-  if (locPtr==NULL) {
-    head->first=newPtr;
+  if (head->first==NULL) {//헤드 vertex가 빈공간일 경우
+    head->first=temp;
+    return temp;
   }
-  else {
-    predPtr=NULL;
-    while (locPtr!=NULL && (head->compare(item,locPtr->data)>=0)) {
-      if (head->compare(item,locPtr->data)==0) {
-        free(newPtr);
-        head->count--;
-        return NULL;
-      }
-      predPtr=locPtr;
-      locPtr=locPtr->pnextvertex;
-    }
-    if (predPtr==NULL) {
-      head->first=newPtr;
-    }
-    else {
-      predPtr->pnextvertex=newPtr;
-    }
-    newPtr->pnextvertex=locPtr;
+
+  pVertex check=head->first;//헤드 vertex가 빈공간이 아닐 경우 마지막 vertex를 찾는 과정
+  while (check->pnextvertex!=NULL) {
+    check=check->pnextvertex;
   }
-  return newPtr;
+  check->pnextvertex=temp;
+  return temp;
 }
 
 pArc return_last_arc(pVertex check) {//어떤 vertex의 마지막 arc 포인터를 return, 없을경우 NULL 리턴됨
@@ -280,11 +254,4 @@ bool BreathFirstTraversal(pGragh head,pVertex root,void (*process)(void *dataptr
   }
   
   return true;
-}
-
-void print_all_arc_data(pGragh head,pVertex check,void (*process)(void *dataptr)) {
-	pArc temp=NULL;
-	for (temp=check->fpArk;temp!=NULL;temp=temp->next) {
-		(*process)(temp->destination->data);
-	}
 }

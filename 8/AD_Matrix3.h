@@ -52,6 +52,18 @@ pVertex check_data(pGragh head,void *item) {
     return temp;
 }
 
+pVertex return_vertex(pGragh root, int sequence) {
+    if (sequence>=root->count||sequence<0) {
+        return NULL;
+    }
+    pVertex temp=root->first;
+    for (int i=0;i<sequence;i++) {
+        temp=temp->pnextvertex;
+    }
+    return temp;
+}
+
+
 
 pVertex addVertex(pGragh head,void* item) {
     pVertex temp = (pVertex) malloc(sizeof(Vertex));
@@ -158,21 +170,25 @@ pVertex addVertex(pGragh head,void* item) {
     return temp;
 }
 
-bool add_arc(pGragh head,pVertex superior, pVertex inferior) {//superior -> inferior, 
+bool add_arc(pGragh head,pVertex superior, pVertex inferior,int weight) {//superior -> inferior, 
     int super=sequence_vertex(head,superior),infer=sequence_vertex(head,inferior);
-    if (super==-1||infer==-1) {
+    if (super==-1||infer==-1||weight<0||superior==inferior) {
         return false;//없는 경우가 잇을 경우 바로 종료.
     }
-    head->pArc[super][infer]=1;//super -> infer 
+    head->pArc[super][infer]=weight;//super -> infer 
+    superior->OutDegree++;
+    inferior->inDegree++;
     return true;
 }
 
 bool delete_arc(pGragh head,pVertex superior, pVertex inferior) {
     int super=sequence_vertex(head,superior),infer=sequence_vertex(head,inferior);
-    if (super==-1||infer==-1) {
-        return false;//없는 경우가 잇을 경우 바로 종료.
+    if (super==-1||infer==-1||super==infer||head->pArc[super][infer]<=0) {
+        return false;//없는 경우가 잇을 경우 바로 종료. 혹은 동일 값인경우 무시
     }
     head->pArc[super][infer]=0;//super -> infer 관계 바로 삭제
+    superior->OutDegree--;
+    inferior->inDegree--;
     return true;
 }
 
@@ -181,7 +197,9 @@ bool delete_all_arc(pGragh head,pVertex target) {// target의 모든 outdegree �
     if (target_number==-1) {
         return false;
     }
-    memset((head->pArc)[target_number],0,(head->count)*sizeof(int));
+    for (int i=0;i<head->count;i++) {
+        delete_arc(head,target,return_vertex(head,i));
+    }
     return true;
 }
 
@@ -279,17 +297,6 @@ void clear_processed(pGragh root) {
   }
 }
 
-pVertex return_vertex(pGragh root, int sequence) {
-    if (sequence>=root->count) {
-        return NULL;
-    }
-    pVertex temp=root->first;
-    for (int i=0;i<sequence;i++) {
-        temp=temp->pnextvertex;
-    }
-    return temp;
-}
-
 
 bool DepthFirstTraversal (pGragh head,pVertex root,void (*process)(void *dataptr)) {
     if (sequence_vertex(head, root)==-1) {
@@ -335,14 +342,24 @@ bool BreathFirstTraversal(pGragh head,pVertex root,void (*process)(void *dataptr
   return true;
 }
 
-void print_all_arc_data(pGragh head,pVertex check,void (*process)(void *dataptr)) {
+bool print_vertex_data(pGragh head, pVertex check , void (*printdata)(void *temp)) {
+    if (sequence_vertex(head,check)<0) {
+        return false;
+    }
+    (*printdata)(check->data);
+    return true;
+}
+
+void print_all_arc_data(pGragh head,pVertex check,void (*printdata)(void *temp)) {
     int k=sequence_vertex(head,check);
     if (k!=-1) {
         for (int i=0;i<head->count;i++) {
-            if (head->pArc[k][i]==1) {
-                (process)(return_vertex(head,i)->data);
+            if (head->pArc[k][i]>=1) {
+                (*printdata)(return_vertex(head,i)->data);
+                printf("(%d) ",head->pArc[k][i]);
             }
         }
+        printf("\n");
     
     }
   }

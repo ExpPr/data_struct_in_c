@@ -94,30 +94,8 @@ pVertex addVertex(pGragh head,void* item) {
 
     int location = sequence_vertex(head,temp);
     int size=head->count;
-
-    int** newarc=(int**)malloc(sizeof(int*)*size);
-    for (int i=0;i<size;i++) {
-        newarc[i]=(int*)malloc(sizeof(int)*size);
-    }
-
-    for (int i=0;i<size;i++) {
-        for (int k=0;k<size;k++) {
-            if (i<size-1&&k<size-1) {
-            newarc[i][k]=head->pArc[i][k]; }
-            else {
-                newarc[i][k]=0;
-            }
-        }
-    }
-
-    int **delPtr=head->pArc;
-    head->pArc=newarc;
-
-    for (int i=0;i<size-1;i++) {
-        free(delPtr[i]);
-    }
-    free(delPtr);
-
+    printf("location : %d\n",location);
+    printf("size : %d\n",size);
     head->pArc=(int**)realloc(head->pArc,sizeof(int*)*size);
     for (int i=0;i<size-1;i++) {
      head->pArc[i]=(int*)realloc(head->pArc[i],sizeof(int)*size);
