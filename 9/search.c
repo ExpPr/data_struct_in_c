@@ -6,8 +6,8 @@
 // array + linklist 형태
 #define MAX_SIZE 50// array 크기. 
 
-// 힙은 기본적으로 Array형으로 띄운뒤, 만약 충돌값이 날 경우 그 즉시 LinkedList형식으로 연결함.
-// heap_function은 MAX_SIZE를 기준으로 하며, 데이터에서 MAX_SIZE를 나눈 나머지를 사용함.
+// 해쉬은 기본적으로 Array형으로 띄운뒤, 만약 충돌값이 날 경우 그 즉시 LinkedList형식으로 연결함.
+// hash_function은 MAX_SIZE를 기준으로 하며, 데이터에서 MAX_SIZE를 나눈 나머지를 주소로 사용.
 
 void swap(int *a,int *b) {
     int temp=*a;
@@ -83,11 +83,11 @@ void remove_data(pHeap array) {
             while (array[i].next!=NULL) {
                 del=array[i].next;
                 array[i].next=(array[i].next)->next;
-                del->next=NULL;
                 free(del);
             }
         }
     }
+    free(array);
 }
 
 pHeap create_arrayheap() {
@@ -98,6 +98,7 @@ pHeap create_arrayheap() {
     else {
         for (int i=0;i<MAX_SIZE;i++) {
             temp[i].inputed=false;
+						temp[i].next=NULL;
         }
         return temp;
     }
@@ -192,7 +193,7 @@ int main(void) {
     scanf("%d",&target);
     rewind(stdin);
     int select;
-    printf("Choose a searching method (Binary : 1 , Heap : 2 ) : ");
+    printf("Choose a searching method (Binary : 1 , Hash : 2 ) : ");
     scanf("%d",&select);
     rewind(stdin);
 
@@ -205,7 +206,7 @@ int main(void) {
             fseek(fp,-1,SEEK_CUR);
             }
         }
-        quick_sort(datas,0,line-1);
+				quick_sort(datas,0,line-1);
         bool find=binary_search(datas,line,target);
 
         if (find==true) {
@@ -237,7 +238,10 @@ int main(void) {
         else {
             printf("\n%d is not found.\n",target);
         }
+				fclose(fp);
+				remove_data(heap_data);
     }
-    return 0;
+
+		return 0;
 }
 

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "AD_Matrix_test2.h"
+#include "AD_Matrix.h"
 
 int compare_q(const void *a1, const void *a2) {
   return *(char*)a1-*(char*)a2;

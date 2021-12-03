@@ -116,7 +116,6 @@ pVertex addVertex(pGragh head,void* item) {
     for (int i=0;i<size-1;i++) {
         free(delPtr[i]);
     }
-    free(delPtr);
 
     head->pArc=(int**)realloc(head->pArc,sizeof(int*)*size);
     for (int i=0;i<size-1;i++) {

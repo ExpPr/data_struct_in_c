@@ -12,30 +12,31 @@ void swap(int *a,int *b) {
 }
 
 void select_sort(int *data, int size) {//확인
-    int temp;
+    int i=0,j=0,smallest=0;
+
     for (int i=0;i<size-1;i++) {
+        smallest=i;
         for (int j=i+1;j<size;j++) {
-            if (data[i]>data[j]) {
-                temp=data[i];
-                data[i]=data[j];
-                data[j]=temp;
+            if (data[j]<data[smallest]) {
+                smallest=j;
             }
         }
+
+        swap(&data[i],&data[smallest]);
     }
 }
 
 void bubble_sort(int *data, int size) {//확인
     int temp;
-    for (int i=0;i<size-1;i++) {
-        for (int j=0;j<size-1-i;j++) {
-            if (data[j]>data[j+1]) {
-                temp=data[j];
-                data[j]=data[j+1];
-                data[j+1]=temp;
+    for (int i=0;i<size;i++) {
+            for (int j=size-1;j>i;j--) {
+                if (data[j]<data[j-1]) {
+                    swap(&data[j],&data[j-1]);
+                }
             }
         }
     }
-}
+
 
 void insert_sort(int *data, int size) {//확인
     int i=0,j=0;
@@ -101,7 +102,7 @@ void merge(int *list,int i,int m,int n) {
 
 
 
-void merge_sort(int *list, int low, int high) {//다시
+void merge_sort(int *list, int low, int high) {//확인
     if (low<high) {
         int mid=(low+high)/2;
         merge_sort(list,low,mid);
@@ -189,17 +190,19 @@ int main(void) {
     int q=line/10;
     int p=line%10;
 
-    for (int i=0;i<q-1 && i>=0;i++) {
+    for (int i=0;i<q && i>=0;i++) {
         for (int j=0;j<9;j++) {
             printf("%d,\t",unsorted[i*10+j]);
         }
         printf("%d\n",unsorted[i*10+9]);
     }
 
+    if (p!=0) {
     for (int i=0;i<p-1;i++) {
         printf("%d,\t",unsorted[q*10+i]);
     }
     printf("%d\n\n",unsorted[line-1]);
+    }
 
     fclose(fp);
     return 0;

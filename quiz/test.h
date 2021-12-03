@@ -58,6 +58,20 @@ pVertex addVertex(pGragh head,void* item) {
     if (temp==NULL) {
         return NULL;
     }
+
+    int size=head->count;
+    int** newarc=(int**)malloc(sizeof(int*)*(size+1));
+    for (int i=0;i<size;i++) {
+        newarc[i]=(int*)malloc(sizeof(int)*(size+1));
+        if (newarc[i]==NULL) {
+            for (int k=0;k<i;k++) {
+                free(newarc[k]);
+            }
+            free(newarc);
+            return NULL;
+        }
+    }
+
     temp->inDegree=0;
     temp->OutDegree=0;
     temp->processed=0;
@@ -93,45 +107,59 @@ pVertex addVertex(pGragh head,void* item) {
     }
 
     int location = sequence_vertex(head,temp);
-    int size=head->count;
-    printf("location : %d\n",location);
-    printf("size : %d\n",size);
-    head->pArc=(int**)realloc(head->pArc,sizeof(int*)*size);
-    for (int i=0;i<size-1;i++) {
-     head->pArc[i]=(int*)realloc(head->pArc[i],sizeof(int)*size);
-    }
-    head->pArc[size-1]=(int*)malloc(sizeof(int)*size);
+    size=head->count;
 
-    if (location!=0 && location!=(head->count)-1) {
-        for (int i=0;i<location;i++) {
-            for (int k=size-2;k>=location;k--)
-                head->pArc[i][k+1]=head->pArc[i][k];
-            }
-
-        for (int i=size-2;i>=location;i--) {
-            for (int k=size-2;k>=location;k--) {
-                head->pArc[i+1][k+1]=head->pArc[i][k];
-            }
-        }
-        for (int i=size-2;i>=location;i--) { 
-            for (int k=0;k<location;k++) {
-                head->pArc[i+1][k]=head->pArc[i][k];
-            }
-        }
-    }
-
-    if (location==0) {
-        for (int i=size-2;i>=0;i--) {
-            for (int k=size-1;k>=0;k--) {
-                head->pArc[i+1][k+1]=head->pArc[i][k];
-            }
-        }
-    }
 
     for (int i=0;i<size;i++) {
-        head->pArc[i][location]=0;
+        for (int k=0;k<size;k++) {
+            if (i<size-1&&k<size-1) {
+            newarc[i][k]=head->pArc[i][k]; }
+            else {
+                newarc[i][k]=0;
+            }
+        }
     }
-    memset((head->pArc)[location],0,size*sizeof(int));
+
+
+    int **delPtr=head->pArc;
+    head->pArc=newarc;
+
+    for (int i=0;i<size-1;i++) {
+        free(delPtr[i]);
+    }
+    free(delPtr);
+
+    if (location != 0 && location != (head->count) - 1) {
+        for (int i = 0; i < location; i++) {
+            for (int k = size - 2; k >= location; k--)
+                head->pArc[i][k + 1] = head->pArc[i][k];
+        }
+
+        for (int i = size - 2; i >= location; i--) {
+            for (int k = size - 2; k >= location; k--) {
+                head->pArc[i + 1][k + 1] = head->pArc[i][k];
+            }
+        }
+        for (int i = size - 2; i >= location; i--) {
+            for (int k = 0; k < location; k++) {
+                head->pArc[i + 1][k] = head->pArc[i][k];
+            }
+        }
+    }
+
+    if (location == 0) {
+        for (int i = size - 2; i >= 0; i--) {
+            for (int k = size - 1; k >= 0; k--) {
+                head->pArc[i + 1][k + 1] = head->pArc[i][k];
+            }
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        head->pArc[i][location] = 0;
+    }
+    memset((head->pArc)[location], 0, size * sizeof(int));
+    
 
     return temp;
 }
